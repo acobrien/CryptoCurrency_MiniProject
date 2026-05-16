@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.cryptocurrency_miniproject.ui.theme.CryptoCurrency_MiniProjectTheme
+import com.example.cryptocurrency_miniproject.ui.theme.screens.CryptoListScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CryptoCurrency_MiniProjectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
+                    CryptoCurrencyAppStart(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -31,17 +32,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun CryptoCurrencyAppStart(name: String, modifier: Modifier = Modifier) {
+    CryptoListScreen()
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     CryptoCurrency_MiniProjectTheme {
-        Greeting("Android")
     }
 }
