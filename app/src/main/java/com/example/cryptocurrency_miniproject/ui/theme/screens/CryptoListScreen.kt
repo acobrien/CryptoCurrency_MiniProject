@@ -1,8 +1,11 @@
 package com.example.cryptocurrency_miniproject.ui.theme.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,39 +22,62 @@ import coil.compose.AsyncImage
 import com.example.cryptocurrency_miniproject.viewmodel.CryptoViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.graphics.Color
+import com.example.cryptocurrency_miniproject.models.Crypto
+import com.example.cryptocurrency_miniproject.viewmodel.CryptoUIState
 
 @Composable
-fun CryptoListScreen(viewModel: CryptoViewModel = viewModel()) {
-
-    val cryptos by viewModel.cryptos.collectAsState()
+fun CryptoListScreen(
+    uiState: CryptoUIState,
+    onCryptoClick: (Crypto) -> Unit
+) {
 
     LazyColumn {
-        items(cryptos) { crypto ->
 
-            Card(modifier = Modifier.padding(8.dp)) {
+        items(uiState.cryptos) { crypto ->
 
-                Row(modifier = Modifier.padding(12.dp)) {
+            CryptoItem(
+                crypto = crypto,
+                onCryptoClick = onCryptoClick
+            )
+        }
+    }
+}
 
-                    AsyncImage(
-                        model = crypto.image,
-                        contentDescription = crypto.name,
-                        modifier = Modifier.size(40.dp)
-                    )
+@Composable
+fun CryptoItem(
+    crypto: Crypto,
+    onCryptoClick: (Crypto) -> Unit
+) {
 
-                    Spacer(modifier = Modifier.width(12.dp))
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable {
+                onCryptoClick(crypto)
+            }
+    ) {
+        Row(modifier = Modifier.padding(16.dp)) {
 
-                    Column {
-                        Text(text = crypto.name)
-                        Text(text = crypto.symbol.uppercase())
+            AsyncImage(
+                model = crypto.image,
+                contentDescription = crypto.name,
+                modifier = Modifier.size(50.dp)
+            )
 
-                        Text(text = "$${crypto.currentPrice}")
+            Spacer(modifier = Modifier.width(12.dp))
 
-                        Text(
-                            text = "${crypto.priceChangePercentage24h}%",
-                            color = if (crypto.isPositiveChange()) Color.Green else Color.Red
-                        )
-                    }
-                }
+            Column {
+                Text(text = crypto.name)
+                Text(text = crypto.symbol.uppercase())
+
+                Text(text = "$${crypto.currentPrice}")
+
+                Text(
+                    text = "${crypto.priceChangePercentage24h}%",
+                    color = if (crypto.priceChangePercentage24h >= 0)
+                        Color.Green else Color.Red
+                )
             }
         }
     }

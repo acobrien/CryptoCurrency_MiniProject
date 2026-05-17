@@ -7,26 +7,42 @@ import com.example.cryptocurrency_miniproject.models.Crypto
 import com.example.cryptocurrency_miniproject.models.toCrypto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CryptoViewModel : ViewModel() {
     private val repository = CryptoRepository()
 
-    private val _cryptos = MutableStateFlow<List<Crypto>>(emptyList())
-    val cryptos = _cryptos.asStateFlow()
+    private val _uiState = MutableStateFlow(CryptoUIState())
+    val uiState = _uiState.asStateFlow()
 
     init {
         loadCryptos()
     }
 
     private fun loadCryptos() {
+
         viewModelScope.launch {
 
             val result = repository.getCryptos()
 
             if (result != null) {
-                _cryptos.value = result.map { it.toCrypto() }
+
+                _uiState.update {
+                    it.copy(
+                        cryptos = result.map { dto -> dto.toCrypto() }
+                    )
+                }
             }
+        }
+    }
+
+    fun setSelectedCrypto(crypto: Crypto) {
+
+        _uiState.update {
+            it.copy(
+                selectedCrypto = crypto
+            )
         }
     }
 }
