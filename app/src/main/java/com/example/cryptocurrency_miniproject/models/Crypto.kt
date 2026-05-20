@@ -10,7 +10,7 @@ data class Crypto(
     val priceChangePercentage24h: Double
 ) {
     fun getCoinGeckoUrl(): String =
-        "https://api.coingecko.com/api/v3/coins/$id"
+        "https://www.coingecko.com/en/coins/$id"
 
     fun isPositiveChange(): Boolean =
             priceChangePercentage24h >= 0

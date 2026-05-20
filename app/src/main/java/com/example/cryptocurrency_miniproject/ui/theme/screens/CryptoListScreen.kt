@@ -21,33 +21,68 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.cryptocurrency_miniproject.viewmodel.CryptoViewModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import com.example.cryptocurrency_miniproject.models.Crypto
 import com.example.cryptocurrency_miniproject.viewmodel.CryptoUIState
+import androidx.compose.runtime.setValue
 
 @Composable
 fun CryptoListScreen(
     uiState: CryptoUIState,
+    viewModel: CryptoViewModel,
     onCryptoClick: (Crypto) -> Unit
 ) {
 
-    LazyColumn {
+    var searchText by remember {
+        mutableStateOf("")
+    }
 
-        items(uiState.cryptos) { crypto ->
+    Column {
 
-            CryptoItem(
-                crypto = crypto,
-                onCryptoClick = onCryptoClick
-            )
+        TextField(
+            value = searchText,
+
+            onValueChange = {
+
+                searchText = it
+
+                viewModel.searchCoins(it)
+            },
+
+            label = {
+                Text("Search crypto")
+            },
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        )
+
+        val dataToShow =
+            if (searchText.isEmpty())
+                uiState.cryptos
+            else
+                uiState.searchResults
+
+
+        LazyColumn {
+
+            items(dataToShow) { crypto ->
+
+                CryptoItem(
+                    crypto = crypto,
+                    onCryptoClick = onCryptoClick
+                )
+            }
         }
     }
 }
 
 @Composable
-fun CryptoItem(
-    crypto: Crypto,
-    onCryptoClick: (Crypto) -> Unit
-) {
+fun CryptoItem(crypto: Crypto, onCryptoClick: (Crypto) -> Unit) {
 
     Card(
         modifier = Modifier
@@ -70,14 +105,6 @@ fun CryptoItem(
             Column {
                 Text(text = crypto.name)
                 Text(text = crypto.symbol.uppercase())
-
-                Text(text = "$${crypto.currentPrice}")
-
-                Text(
-                    text = "${crypto.priceChangePercentage24h}%",
-                    color = if (crypto.priceChangePercentage24h >= 0)
-                        Color.Green else Color.Red
-                )
             }
         }
     }

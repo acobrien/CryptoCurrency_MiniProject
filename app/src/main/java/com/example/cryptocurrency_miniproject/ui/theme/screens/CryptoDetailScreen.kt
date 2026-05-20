@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,17 +21,12 @@ import coil.compose.AsyncImage
 import com.example.cryptocurrency_miniproject.models.Crypto
 
 @Composable
-fun CryptoDetailScreen(
-    crypto: Crypto
-) {
+fun CryptoDetailScreen(crypto: Crypto) {
 
     val uriHandler = LocalUriHandler.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-
+     Column(
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -57,7 +54,9 @@ fun CryptoDetailScreen(
         )
 
         Text(
-            text = "24h Change: ${crypto.priceChangePercentage24h}%"
+            text = "24h Change: ${crypto.priceChangePercentage24h}%",
+            color = if (crypto.priceChangePercentage24h >= 0)
+                Color.Green else Color.Red
         )
 
         Spacer(modifier = Modifier.height(24.dp))

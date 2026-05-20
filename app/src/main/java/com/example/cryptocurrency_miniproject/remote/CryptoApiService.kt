@@ -1,6 +1,7 @@
 package com.example.cryptocurrency_miniproject.remote
 
 import com.example.cryptocurrency_miniproject.models.CryptoDto
+import com.example.cryptocurrency_miniproject.models.SearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -13,4 +14,9 @@ interface CryptoApiService {
         @Query("page") page: Int = 1,
         @Query("sparkline") sparkline: Boolean = false
     ): List<CryptoDto>
+
+    @GET("search")
+    suspend fun searchCoins(
+        @Query("query") query: String
+    ): SearchResponse
 }

@@ -53,19 +53,14 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CryptoCurrencyAppStart(name: String, modifier: Modifier = Modifier) {
-
     val viewModel: CryptoViewModel = viewModel()
-
     val uiState by viewModel.uiState.collectAsState()
-
     val navController = rememberNavController()
 
     Scaffold(
-
         topBar = {
             CryptoTopBar(navController = navController)
         }
-
     ) { innerPadding ->
 
         NavHost(
@@ -78,10 +73,9 @@ fun CryptoCurrencyAppStart(name: String, modifier: Modifier = Modifier) {
 
                 CryptoListScreen(
                     uiState = uiState,
+                    viewModel = viewModel,
                     onCryptoClick = { crypto ->
-
                         viewModel.setSelectedCrypto(crypto)
-
                         navController.navigate(Routes.DETAIL)
                     }
                 )
@@ -102,33 +96,17 @@ fun CryptoCurrencyAppStart(name: String, modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CryptoTopBar(
-    navController: NavHostController
-) {
-
-    val currentRoute =
-        navController.currentBackStackEntryAsState().value?.destination?.route
-
+fun CryptoTopBar(navController: NavHostController) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     val isOnList = currentRoute == Routes.LIST
     val isOnDetail = currentRoute == Routes.DETAIL
 
     CenterAlignedTopAppBar(
-
-        title = {
-            Text("CryptoTracker")
-        },
-
+        title = { Text("CryptoTracker") },
         navigationIcon = {
-
             when {
-
                 isOnDetail -> {
-
-                    IconButton(
-                        onClick = {
-                            navController.popBackStack()
-                        }
-                    ) {
+                    IconButton(onClick = { navController.popBackStack() } ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
@@ -137,7 +115,6 @@ fun CryptoTopBar(
                 }
 
                 isOnList -> {
-
                     Icon(Icons.Default.Home, contentDescription = null)
                 }
             }

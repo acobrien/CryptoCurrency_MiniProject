@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CryptoViewModel : ViewModel() {
+
     private val repository = CryptoRepository()
 
     private val _uiState = MutableStateFlow(CryptoUIState())
@@ -28,9 +29,12 @@ class CryptoViewModel : ViewModel() {
 
             if (result != null) {
 
-                _uiState.update {
-                    it.copy(
-                        cryptos = result.map { dto -> dto.toCrypto() }
+                _uiState.update { state ->
+
+                    state.copy(
+                        cryptos = result.map { dto ->
+                            dto.toCrypto()
+                        }
                     )
                 }
             }
@@ -39,10 +43,31 @@ class CryptoViewModel : ViewModel() {
 
     fun setSelectedCrypto(crypto: Crypto) {
 
-        _uiState.update {
-            it.copy(
+        _uiState.update { state ->
+
+            state.copy(
                 selectedCrypto = crypto
             )
+        }
+    }
+
+    fun searchCoins(query: String) {
+
+        viewModelScope.launch {
+
+            val result = repository.searchCoins(query)
+
+            result?.let { searchList ->
+
+                _uiState.update { state ->
+
+                    state.copy(
+                        searchResults = searchList.map {
+                            it.toCrypto()
+                        }
+                    )
+                }
+            }
         }
     }
 }
