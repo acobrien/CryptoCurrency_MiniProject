@@ -30,7 +30,13 @@ import com.example.cryptocurrency_miniproject.viewmodel.CryptoViewModel
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import com.example.cryptocurrency_miniproject.ui.theme.screens.CryptoGridScreen
+import androidx.compose.runtime.setValue
 
 
 class MainActivity : ComponentActivity() {
@@ -52,41 +58,77 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun CryptoCurrencyAppStart(name: String, modifier: Modifier = Modifier) {
+fun CryptoCurrencyAppStart(
+    name: String,
+    modifier: Modifier = Modifier
+) {
+
     val viewModel: CryptoViewModel = viewModel()
+
     val uiState by viewModel.uiState.collectAsState()
+
     val navController = rememberNavController()
 
+    var isGridView by remember {
+        mutableStateOf(false)
+    }
+
     Scaffold(
+
         topBar = {
-            CryptoTopBar(navController = navController)
+
+            CryptoTopBar(
+                navController = navController,
+                isGridView = isGridView,
+                onToggleView = {
+
+                    isGridView = !isGridView
+                }
+            )
         }
+
     ) { innerPadding ->
 
         NavHost(
             navController = navController,
-            startDestination = Routes.LIST,
-            modifier = Modifier.padding(innerPadding)
+            startDestination = Routes.LIST
         ) {
 
             composable(Routes.LIST) {
 
-                CryptoListScreen(
-                    uiState = uiState,
-                    viewModel = viewModel,
-                    onCryptoClick = { crypto ->
-                        viewModel.setSelectedCrypto(crypto)
-                        navController.navigate(Routes.DETAIL)
-                    }
-                )
+                if (isGridView) {
+
+                    CryptoGridScreen(
+                        uiState = uiState,
+                        viewModel = viewModel,
+                        onCryptoClick = { crypto ->
+                            viewModel.setSelectedCrypto(crypto)
+                            navController.navigate(Routes.DETAIL)
+                        },
+                        columns = 3,
+                        modifier = Modifier.padding(innerPadding)
+                    )
+
+                } else {
+                    CryptoListScreen(
+                        uiState = uiState,
+                        viewModel = viewModel,
+                        onCryptoClick = { crypto ->
+                            viewModel.setSelectedCrypto(crypto)
+                            navController.navigate(
+                                Routes.DETAIL
+                            )
+                        },
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
             }
 
             composable(Routes.DETAIL) {
-
                 uiState.selectedCrypto?.let { crypto ->
-
                     CryptoDetailScreen(
-                        crypto = crypto
+                        crypto = crypto,
+                        modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
@@ -96,26 +138,62 @@ fun CryptoCurrencyAppStart(name: String, modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CryptoTopBar(navController: NavHostController) {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-    val isOnList = currentRoute == Routes.LIST
-    val isOnDetail = currentRoute == Routes.DETAIL
+fun CryptoTopBar(navController: NavHostController,
+                 isGridView: Boolean,
+                 onToggleView: () -> Unit
+) {
+
+    val currentRoute =
+        navController.currentBackStackEntryAsState()
+            .value
+            ?.destination
+            ?.route
+
+    val isOnList =
+        currentRoute == Routes.LIST
 
     CenterAlignedTopAppBar(
-        title = { Text("CryptoTracker") },
+
+        title = {
+
+            Text(
+                text = "CryptoTracker"
+            )
+        },
+
         navigationIcon = {
-            when {
-                isOnDetail -> {
-                    IconButton(onClick = { navController.popBackStack() } ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
+
+            if (isOnList) {
+
+                IconButton(
+                    onClick = onToggleView
+                ) {
+
+                    Icon(
+
+                        imageVector =
+                            if (isGridView)
+                                Icons.Default.Menu
+                            else
+                                Icons.Default.GridView,
+
+                        contentDescription = null
+                    )
                 }
 
-                isOnList -> {
-                    Icon(Icons.Default.Home, contentDescription = null)
+            } else {
+
+                IconButton(
+                    onClick = {
+
+                        navController.popBackStack()
+                    }
+                ) {
+
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = null
+                    )
                 }
             }
         }
