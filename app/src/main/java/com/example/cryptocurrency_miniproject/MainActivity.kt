@@ -62,42 +62,26 @@ fun CryptoCurrencyAppStart(
     name: String,
     modifier: Modifier = Modifier
 ) {
-
     val viewModel: CryptoViewModel = viewModel()
-
     val uiState by viewModel.uiState.collectAsState()
-
     val navController = rememberNavController()
-
-    var isGridView by remember {
-        mutableStateOf(false)
-    }
+    var isGridView by remember { mutableStateOf(false) }
 
     Scaffold(
-
         topBar = {
-
             CryptoTopBar(
                 navController = navController,
                 isGridView = isGridView,
-                onToggleView = {
-
-                    isGridView = !isGridView
-                }
+                onToggleView = { isGridView = !isGridView }
             )
         }
-
     ) { innerPadding ->
-
         NavHost(
             navController = navController,
             startDestination = Routes.LIST
         ) {
-
             composable(Routes.LIST) {
-
                 if (isGridView) {
-
                     CryptoGridScreen(
                         uiState = uiState,
                         viewModel = viewModel,
@@ -108,7 +92,6 @@ fun CryptoCurrencyAppStart(
                         columns = 3,
                         modifier = Modifier.padding(innerPadding)
                     )
-
                 } else {
                     CryptoListScreen(
                         uiState = uiState,
@@ -142,54 +125,29 @@ fun CryptoTopBar(navController: NavHostController,
                  isGridView: Boolean,
                  onToggleView: () -> Unit
 ) {
-
-    val currentRoute =
-        navController.currentBackStackEntryAsState()
-            .value
-            ?.destination
-            ?.route
-
-    val isOnList =
-        currentRoute == Routes.LIST
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val isOnList = currentRoute == Routes.LIST
 
     CenterAlignedTopAppBar(
-
         title = {
-
-            Text(
-                text = "CryptoTracker"
-            )
+            Text(text = "CryptoTracker")
         },
-
         navigationIcon = {
-
             if (isOnList) {
-
-                IconButton(
-                    onClick = onToggleView
-                ) {
-
+                IconButton(onClick = onToggleView) {
                     Icon(
-
                         imageVector =
                             if (isGridView)
                                 Icons.Default.Menu
                             else
                                 Icons.Default.GridView,
-
                         contentDescription = null
                     )
                 }
-
             } else {
-
                 IconButton(
-                    onClick = {
-
-                        navController.popBackStack()
-                    }
+                    onClick = { navController.popBackStack() }
                 ) {
-
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = null
@@ -203,6 +161,5 @@ fun CryptoTopBar(navController: NavHostController,
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    CryptoCurrency_MiniProjectTheme {
-    }
+    CryptoCurrency_MiniProjectTheme {}
 }

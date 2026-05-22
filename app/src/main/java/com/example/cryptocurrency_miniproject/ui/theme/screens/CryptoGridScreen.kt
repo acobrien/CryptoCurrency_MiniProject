@@ -38,27 +38,15 @@ fun CryptoGridScreen(
         mutableStateOf("")
     }
 
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
-
+    Column(modifier = modifier.fillMaxSize()) {
         TextField(
             value = searchText,
-
             onValueChange = {
-
                 searchText = it
-
                 viewModel.searchCoins(it)
             },
-
-            label = {
-                Text("Search crypto")
-            },
-
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
+            label = { Text("Search crypto") },
+            modifier = Modifier.fillMaxWidth().padding(8.dp)
         )
 
         val dataToShow =
@@ -74,7 +62,6 @@ fun CryptoGridScreen(
         ) {
 
             items(dataToShow) { crypto ->
-
                 CryptoGridItem(
                     crypto = crypto,
                     onCryptoClick = onCryptoClick
@@ -85,38 +72,19 @@ fun CryptoGridScreen(
 }
 
 @Composable
-fun CryptoGridItem(
-    crypto: Crypto,
-    onCryptoClick: (Crypto) -> Unit
-) {
-
-    Card(
-        modifier = Modifier
-            .padding(8.dp)
-            .clickable {
-
-                onCryptoClick(crypto)
-            }
-    ) {
-
+fun CryptoGridItem(crypto: Crypto, onCryptoClick: (Crypto) -> Unit) {
+    Card(modifier = Modifier.padding(8.dp).clickable { onCryptoClick(crypto) }) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(8.dp)
         ) {
-
             AsyncImage(
                 model = crypto.image,
                 contentDescription = crypto.name,
                 modifier = Modifier.height(100.dp)
             )
-
-            Text(
-                text = crypto.name
-            )
-
-            Text(
-                text = crypto.symbol.uppercase()
-            )
+            Text(text = crypto.name)
+            Text(text = crypto.symbol.uppercase())
         }
     }
 }

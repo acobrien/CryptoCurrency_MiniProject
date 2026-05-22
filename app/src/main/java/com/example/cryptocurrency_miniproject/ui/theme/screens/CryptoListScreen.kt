@@ -42,24 +42,14 @@ fun CryptoListScreen(
     }
 
     Column(modifier = modifier.fillMaxSize()) {
-
         TextField(
             value = searchText,
-
             onValueChange = {
-
                 searchText = it
-
                 viewModel.searchCoins(it)
             },
-
-            label = {
-                Text("Search crypto")
-            },
-
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
+            label = { Text("Search crypto") },
+            modifier = Modifier.fillMaxWidth().padding(8.dp)
         )
 
         val dataToShow =
@@ -68,11 +58,8 @@ fun CryptoListScreen(
             else
                 uiState.searchResults
 
-
         LazyColumn {
-
             items(dataToShow) { crypto ->
-
                 CryptoItem(
                     crypto = crypto,
                     onCryptoClick = onCryptoClick
@@ -84,17 +71,8 @@ fun CryptoListScreen(
 
 @Composable
 fun CryptoItem(crypto: Crypto, onCryptoClick: (Crypto) -> Unit) {
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable {
-                onCryptoClick(crypto)
-            }
-    ) {
+    Card(modifier = Modifier.fillMaxWidth().padding(8.dp).clickable { onCryptoClick(crypto) }) {
         Row(modifier = Modifier.padding(16.dp)) {
-
             AsyncImage(
                 model = crypto.image,
                 contentDescription = crypto.name,

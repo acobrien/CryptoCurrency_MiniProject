@@ -52,15 +52,11 @@ fun CryptoDetailScreen(crypto: Crypto, modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.headlineMedium
         )
 
-        Text(
-            text = crypto.symbol.uppercase()
-        )
+        Text(text = crypto.symbol.uppercase())
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "Current Price: $${crypto.currentPrice}"
-        )
+        Text(text = "Current Price: $${crypto.currentPrice}")
 
         Text(
             text = "24h Change: ${crypto.priceChangePercentage24h}%",
@@ -93,56 +89,32 @@ fun CryptoDetailScreen(crypto: Crypto, modifier: Modifier = Modifier) {
 
 @Composable
 fun VideoList() {
-
     val videos = listOf(
         "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
         "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4"
     )
 
     LazyRow {
-
         items(videos) { videoUrl ->
-
             VideoPlayer(videoUrl)
-
         }
     }
 }
 
 @Composable
-fun VideoPlayer(
-    videoUrl: String
-) {
-
+fun VideoPlayer(videoUrl: String) {
     val context = LocalContext.current
-
     val exoPlayer = remember {
-
-        ExoPlayer.Builder(context)
-            .build()
-            .apply {
-
-                setMediaItem(
-                    MediaItem.fromUri(videoUrl)
-                )
-
-                prepare()
-            }
+        ExoPlayer.Builder(context).build().apply {
+            setMediaItem(MediaItem.fromUri(videoUrl))
+            prepare()
+        }
     }
 
     AndroidView(
-
         factory = {
-
-            PlayerView(it).apply {
-
-                player = exoPlayer
-            }
+            PlayerView(it).apply { player = exoPlayer }
         },
-
-        modifier = Modifier
-            .padding(8.dp)
-            .height(200.dp)
-            .width(300.dp)
+        modifier = Modifier.padding(8.dp).height(200.dp).width(300.dp)
     )
 }
