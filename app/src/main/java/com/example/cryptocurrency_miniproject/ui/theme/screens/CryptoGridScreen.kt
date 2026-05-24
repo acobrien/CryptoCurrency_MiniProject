@@ -1,5 +1,6 @@
 package com.example.cryptocurrency_miniproject.ui.theme.screens
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,14 +25,14 @@ import com.example.cryptocurrency_miniproject.viewmodel.CryptoUIState
 import com.example.cryptocurrency_miniproject.viewmodel.CryptoViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalConfiguration
 
 @Composable
 fun CryptoGridScreen(
     uiState: CryptoUIState,
     viewModel: CryptoViewModel,
     onCryptoClick: (Crypto) -> Unit,
-    modifier: Modifier = Modifier,
-    columns: Int = 3
+    modifier: Modifier = Modifier
 ) {
 
     var searchText by remember {
@@ -49,13 +50,21 @@ fun CryptoGridScreen(
             modifier = Modifier.fillMaxWidth().padding(8.dp)
         )
 
+        //CONFIG depending on the orientation of the screen
+        val configuration = LocalConfiguration.current
+        val columns = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            4
+        } else {
+            2
+        }
+
         val dataToShow =
             if (searchText.isEmpty())
                 uiState.cryptos
             else
                 uiState.searchResults
 
-
+        
         LazyVerticalGrid(
             columns = GridCells.Fixed(columns),
             modifier = Modifier.fillMaxSize()

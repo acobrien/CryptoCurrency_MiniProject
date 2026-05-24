@@ -89,7 +89,6 @@ fun CryptoCurrencyAppStart(
                             viewModel.setSelectedCrypto(crypto)
                             navController.navigate(Routes.DETAIL)
                         },
-                        columns = 3,
                         modifier = Modifier.padding(innerPadding)
                     )
                 } else {
