@@ -37,6 +37,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.example.cryptocurrency_miniproject.ui.theme.screens.CryptoGridScreen
 import androidx.compose.runtime.setValue
+import com.example.cryptocurrency_miniproject.ui.theme.screens.LoginScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -78,8 +79,20 @@ fun CryptoCurrencyAppStart(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Routes.LIST
+            startDestination = Routes.LOGIN
         ) {
+            composable(Routes.LOGIN){
+                LoginScreen(
+                    onLoginSuccess = {
+                        navController.navigate(Routes.LIST){
+                            popUpTo(Routes.LOGIN){
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
+            }
+
             composable(Routes.LIST) {
                 if (isGridView) {
                     CryptoGridScreen(

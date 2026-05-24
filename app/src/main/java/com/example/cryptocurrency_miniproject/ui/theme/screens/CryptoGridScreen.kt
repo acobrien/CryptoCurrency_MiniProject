@@ -64,7 +64,7 @@ fun CryptoGridScreen(
             else
                 uiState.searchResults
 
-        
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(columns),
             modifier = Modifier.fillMaxSize()
