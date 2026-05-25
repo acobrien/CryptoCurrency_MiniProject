@@ -1,4 +1,4 @@
-package com.example.cryptocurrency_miniproject.ui.theme.screens
+package com.example.cryptocurrency_miniproject.ui.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
@@ -26,13 +26,21 @@ import com.example.cryptocurrency_miniproject.viewmodel.CryptoViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalConfiguration
+<<<<<<< HEAD:app/src/main/java/com/example/cryptocurrency_miniproject/ui/theme/screens/CryptoGridScreen.kt
+=======
+
+>>>>>>> auth-rotation:app/src/main/java/com/example/cryptocurrency_miniproject/ui/screens/CryptoGridScreen.kt
 
 @Composable
 fun CryptoGridScreen(
     uiState: CryptoUIState,
     viewModel: CryptoViewModel,
     onCryptoClick: (Crypto) -> Unit,
+<<<<<<< HEAD:app/src/main/java/com/example/cryptocurrency_miniproject/ui/theme/screens/CryptoGridScreen.kt
     modifier: Modifier = Modifier
+=======
+    modifier: Modifier = Modifier,
+>>>>>>> auth-rotation:app/src/main/java/com/example/cryptocurrency_miniproject/ui/screens/CryptoGridScreen.kt
 ) {
 
     var searchText by remember {
@@ -64,6 +72,12 @@ fun CryptoGridScreen(
             else
                 uiState.searchResults
 
+        val configuration = LocalConfiguration.current
+        val columns =
+            if (configuration.orientation ==
+                Configuration.ORIENTATION_LANDSCAPE)
+                5
+            else 3
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(columns),
@@ -82,10 +96,10 @@ fun CryptoGridScreen(
 
 @Composable
 fun CryptoGridItem(crypto: Crypto, onCryptoClick: (Crypto) -> Unit) {
-    Card(modifier = Modifier.padding(8.dp).clickable { onCryptoClick(crypto) }) {
+    Card(modifier = Modifier.padding(8.dp).fillMaxWidth().clickable { onCryptoClick(crypto) }) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(8.dp).fillMaxWidth()
         ) {
             AsyncImage(
                 model = crypto.image,

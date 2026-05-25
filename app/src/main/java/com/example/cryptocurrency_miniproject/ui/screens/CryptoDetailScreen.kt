@@ -1,4 +1,4 @@
-package com.example.cryptocurrency_miniproject.ui.theme.screens
+package com.example.cryptocurrency_miniproject.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
