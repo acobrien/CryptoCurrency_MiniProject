@@ -24,18 +24,18 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.cryptocurrency_miniproject.Routes.Routes
 import com.example.cryptocurrency_miniproject.ui.theme.CryptoCurrency_MiniProjectTheme
-import com.example.cryptocurrency_miniproject.ui.theme.screens.CryptoDetailScreen
-import com.example.cryptocurrency_miniproject.ui.theme.screens.CryptoListScreen
+import com.example.cryptocurrency_miniproject.ui.screens.CryptoDetailScreen
+import com.example.cryptocurrency_miniproject.ui.screens.CryptoListScreen
 import com.example.cryptocurrency_miniproject.viewmodel.CryptoViewModel
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.GridView
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.example.cryptocurrency_miniproject.ui.theme.screens.CryptoGridScreen
+import androidx.compose.runtime.saveable.rememberSaveable
+import com.example.cryptocurrency_miniproject.ui.screens.CryptoGridScreen
 import androidx.compose.runtime.setValue
 
 
@@ -65,7 +65,7 @@ fun CryptoCurrencyAppStart(
     val viewModel: CryptoViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
     val navController = rememberNavController()
-    var isGridView by remember { mutableStateOf(false) }
+    var isGridView by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -89,7 +89,6 @@ fun CryptoCurrencyAppStart(
                             viewModel.setSelectedCrypto(crypto)
                             navController.navigate(Routes.DETAIL)
                         },
-                        columns = 3,
                         modifier = Modifier.padding(innerPadding)
                     )
                 } else {
