@@ -26,21 +26,13 @@ import com.example.cryptocurrency_miniproject.viewmodel.CryptoViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalConfiguration
-<<<<<<< HEAD:app/src/main/java/com/example/cryptocurrency_miniproject/ui/theme/screens/CryptoGridScreen.kt
-=======
-
->>>>>>> auth-rotation:app/src/main/java/com/example/cryptocurrency_miniproject/ui/screens/CryptoGridScreen.kt
 
 @Composable
 fun CryptoGridScreen(
     uiState: CryptoUIState,
     viewModel: CryptoViewModel,
     onCryptoClick: (Crypto) -> Unit,
-<<<<<<< HEAD:app/src/main/java/com/example/cryptocurrency_miniproject/ui/theme/screens/CryptoGridScreen.kt
-    modifier: Modifier = Modifier
-=======
     modifier: Modifier = Modifier,
->>>>>>> auth-rotation:app/src/main/java/com/example/cryptocurrency_miniproject/ui/screens/CryptoGridScreen.kt
 ) {
 
     var searchText by remember {
@@ -57,14 +49,6 @@ fun CryptoGridScreen(
             label = { Text("Search crypto") },
             modifier = Modifier.fillMaxWidth().padding(8.dp)
         )
-
-        //CONFIG depending on the orientation of the screen
-        val configuration = LocalConfiguration.current
-        val columns = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            4
-        } else {
-            2
-        }
 
         val dataToShow =
             if (searchText.isEmpty())
